@@ -1,0 +1,6 @@
+TicketID,CreatedDate,DueDate,ClosedDate,Status,Priority,SLAHours,SecurityID,Vendor,IssueType,FieldImpacted,DetectedBy,RootCause,ResolutionMethod,EscalatedFlag,ReopenedFlag,AssignedTo
+TCK1001,2026/01/19,2026/01/20,2026/01/19,Closed,High,24,SEC0006,Refinitiv,VendorMismatch,Coupon,AutomatedRule,VendorFeedDiscrepancy,ValidatedBloomberg,false,false,AnalystA
+TCK1002,2026/01/19,2026/01/20,,Open,High,24,SEC0009,Refinitiv,CurrencyCodeConflict,Currency,ControlCheck,CodeStandardisationNeeded,Pending,false,false,AnalystB
+TCK1003,2026/01/18,2026/01/20,2026/01/19,Closed,Medium,48,SEC0003,Bloomberg,ExchangeCodeMapping,Exchange,UserTicket,MappingTableOutdated,UpdatedMapping,true,false,AnalystA
+TCK1004,2026/01/19,2026/01/21,,Open,Medium,48,SEC0006,Bloomberg,MissingAttribute,LastUpdated,FreshnessMonitor,DelayedVendorUpdate,Pending,false,false,AnalystC
+TCK1005,2026/01/17,2026/01/19,2026/01/20,Closed,Low,48,SEC0007,Bloomberg,IdentifierGap,SEDOL,DataProfile,NotApplicableForUSBond,DocumentedRule,false,true,AnalystB
