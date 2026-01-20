@@ -1,6 +1,0 @@
-AsOfDate,IndexID,IndexName,SecurityID,Weight,Vendor
-2026/01/19,IDX001,S and P 500,SEC0001,0.070,Bloomberg
-2026/01/19,IDX001,S and P 500,SEC0002,0.060,Bloomberg
-2026/01/19,IDX001,S and P 500,SEC0005,0.015,Bloomberg
-2026/01/19,IDX002,Nasdaq 100,SEC0001,0.090,Bloomberg
-2026/01/19,IDX002,Nasdaq 100,SEC0010,0.040,Bloomberg
