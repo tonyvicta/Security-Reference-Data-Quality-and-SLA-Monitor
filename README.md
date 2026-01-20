@@ -1,58 +1,65 @@
 # Security Reference Data Mini Project
 
-## Overview
-I built a small security reference data pipeline that mirrors how an Investment Data Services team supports daily operations. The project ingests Bloomberg style security attributes plus a secondary vendor snapshot, validates and profiles the data, integrates it into a single internal Security Master record, manages exceptions with SLA tracking, and distributes curated tables to Power BI for reporting.
-
-All datasets in this repo are synthetic and created for interview preparation.
-
 ## Objective
 Build a small security reference data pipeline that ingests Bloomberg style security attributes, validates them, integrates them into a single internal Security Master record, manages exceptions with SLA tracking, and distributes a curated dataset to Power BI for reporting.
 
 ## Workflow and tasks
 
 ### Step 1 Sourcing
-Project task  
-Load daily security reference extracts from Bloomberg plus one secondary vendor into landing tables.
+Getting the data from somewhere.
+- External vendors like Bloomberg, LSEG DataScope
+- Internal sources like trading, accounting, or portfolio systems.
 
-What I demonstrate  
-I understand vendor sourcing, field formats, and the idea that different vendors can disagree.
-
-Bloomberg angle  
-Includes Bloomberg identifiers and fields such as BBGID, FIGI, Ticker, Yellow Key, ID_ISIN, ID_CUSIP, ID_SEDOL1, CRNCY, EXCH_CODE, SECURITY_TYP, MATURITY, CPN, DAY_CNT_DES.
+Key point: each source can disagree, arrive at different times, and use different identifiers
 
 ### Step 2 Analysis
-Project task  
-Run data quality checks and profiling.
+Checking whether it makes sense and whether it matches expectations.
 
-Checks included  
-1. Completeness for key identifiers  
-2. Duplicate detection on ISIN and BBGID  
-3. Cross field validation such as currency versus exchange region  
-4. Freshness check using LastUpdated  
-5. Outlier checks for coupon and maturity on bonds  
+- Is the currency correct for a London listed share?
+- Did a bond coupon change unexpectedly?
+- Do we suddenly have two records for the same security?
+
+Analysis here is investigation, validation, and understanding data patterns. 
 
 ### Step 3 Integration
-Project task  
-Create an internal golden record Security Master.
+Bringing multiple sources together into a consistent internal model.
 
-Rule examples  
-1. Prefer Bloomberg for identifiers and descriptive fields  
-2. Prefer secondary vendor for missing attributes when Bloomberg is blank  
-3. Standardise exchange codes and currency codes  
-4. Create one internal SecurityID per instrument  
+- Mapping vendor identifiers to security IDs.
+- Choosing which source is the golden value for each field.
+- Applying transformation rules, like standardising exchange codes or country codes.
+
+This is where vendor data is mapped, standardised, and merged into a single golden Security Master record.
 
 ### Step 4 Management
-Project task  
-Create an exception queue and track investigation outcomes.
+Ongoing maintenance of that data over time.
 
-What I track  
-Issue type, root cause, resolution method, escalations, SLA due date, reopen flag.
+- Daily updates, fixes, overrides, corporate action processing.
+- Handling new security setups.
+- Controlling data quality rules and audit trails.
+- Handling exceptions and keeping SLAs.
+
+Data to day ongoing task.
 
 ### Step 5 Distribution
-Project task  
-Publish curated tables and build a Power BI report.
+Delivering the cleaned and controlled data to everyone who needs it.
+- Portfolio managers need it for trading and research.
+- Risk and performance teams need it for analytics.
+- Operations teams need it for settlements and reconciliations.
+- Compliance needs it for restrictions and reporting.
 
-Power BI pages  
+Publishing to downstream databases, data marts, reports, feeds, or APIs.
+
+## Case study
+
+A new corporate bond is issued.
+
+- Sourcing: Bloomberg feed delivers the bond reference record.
+- Analysis: quality checks flag missing required attributes and an identifier mismatch.
+- Integration: map ISIN to Fidelity SecurityID and standardise key fields.
+- Management: investigate the exception, document the fix, and complete within SLA.
+- Distribution: publish the corrected record so downstream systems can use it for trading and reporting.
+
+## Power BI pages  
 1. Data Quality Overview  
 2. Exceptions and SLA  
 3. Vendor Comparison  
@@ -65,7 +72,6 @@ Power BI pages
 4. Power BI report built on those tables  
 
 ## Repository structure
-Suggested structure for this repo
 
 * data  
   * DimSecurityMaster.csv  
@@ -79,25 +85,6 @@ Suggested structure for this repo
 * screenshots  
   * Optional screenshots of the Power BI pages  
 * README.md  
-
-## How to use in Power BI
-1. Open Power BI Desktop  
-2. Get Data then Text or CSV and load each file from the data folder  
-3. Create relationships using SecurityID as the key  
-4. Build the pages listed above  
-5. Add measures for SLA performance, time to resolve, aging buckets, reopen rate  
-
-## Notes on realism
-This project is intentionally designed to reflect common reference data challenges:
-* Vendor mismatches for the same field  
-* Exchange code mapping differences  
-* Currency code differences at share class level  
-* Exceptions that require triage, investigation, documentation, and escalation  
-
-## Tech stack used
-* CSV as a simple landing format for vendor snapshots  
-* Power BI for reporting and operational monitoring  
-* SQL and Python are natural next steps to automate the checks and integration logic  
 
 ## Future enhancements
 1. Add a small data dictionary for each table and field  
