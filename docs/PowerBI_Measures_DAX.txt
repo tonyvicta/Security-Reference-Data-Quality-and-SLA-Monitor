@@ -1,4 +1,32 @@
-Measures assume you loaded FactExceptions as a table.
+Power BI Measures and Columns
+These measures assume the FactExceptions table is loaded and date columns are set as Date type.
+
+Optional Date table
+DateTable =
+VAR MinDate =
+    MINX(
+        UNION(
+            SELECTCOLUMNS(FactExceptions, "D", FactExceptions[CreatedDate]),
+            SELECTCOLUMNS(FactExceptions, "D", FactExceptions[DueDate]),
+            SELECTCOLUMNS(FactExceptions, "D", FactExceptions[ClosedDate])
+        ),
+        [D]
+    )
+VAR MaxDate =
+    MAXX(
+        UNION(
+            SELECTCOLUMNS(FactExceptions, "D", FactExceptions[CreatedDate]),
+            SELECTCOLUMNS(FactExceptions, "D", FactExceptions[DueDate]),
+            SELECTCOLUMNS(FactExceptions, "D", FactExceptions[ClosedDate])
+        ),
+        [D]
+    )
+RETURN
+    CALENDAR(MinDate, MaxDate)
+
+Core counts
+Total Exceptions =
+COUNTROWS(FactExceptions)
 
 Open Exceptions =
 CALCULATE(
@@ -12,40 +40,186 @@ CALCULATE(
     FactExceptions[Status] = "Closed"
 )
 
+High Priority Open =
+CALCULATE(
+    COUNTROWS(FactExceptions),
+    FactExceptions[Status] = "Open",
+    FactExceptions[Priority] = "High"
+)
+
+Exceptions Due Today =
+CALCULATE(
+    COUNTROWS(FactExceptions),
+    FactExceptions[Status] = "Open",
+    FactExceptions[DueDate] = TODAY()
+)
+
+Overdue Open Exceptions =
+CALCULATE(
+    COUNTROWS(FactExceptions),
+    FactExceptions[Status] = "Open",
+    FactExceptions[DueDate] < TODAY()
+)
+
+Time to resolve
+Resolution Hours =
+VAR Created = FactExceptions[CreatedDate]
+VAR Closed = FactExceptions[ClosedDate]
+RETURN
+IF(
+    NOT ISBLANK(Closed),
+    DATEDIFF(Created, Closed, HOUR),
+    BLANK()
+)
+
+Average Resolution Hours =
+AVERAGEX(
+    FILTER(FactExceptions, FactExceptions[Status] = "Closed"),
+    FactExceptions[Resolution Hours]
+)
+
+Median Resolution Hours =
+MEDIANX(
+    FILTER(FactExceptions, FactExceptions[Status] = "Closed"),
+    FactExceptions[Resolution Hours]
+)
+
+SLA logic
+SLA Breach Flag =
+VAR Due = FactExceptions[DueDate]
+VAR Closed = FactExceptions[ClosedDate]
+VAR Status = FactExceptions[Status]
+RETURN
+IF(
+    Status = "Closed" && NOT ISBLANK(Closed) && Closed > Due,
+    1,
+    IF(
+        Status = "Open" && Due < TODAY(),
+        1,
+        0
+    )
+)
+
+SLA Breached Count =
+CALCULATE(
+    COUNTROWS(FactExceptions),
+    FactExceptions[SLA Breach Flag] = 1
+)
+
 SLA Met Count =
 CALCULATE(
     COUNTROWS(FactExceptions),
-    FactExceptions[Status] = "Closed",
-    FactExceptions[ClosedDate] <= FactExceptions[DueDate]
+    FactExceptions[SLA Breach Flag] = 0
 )
 
 SLA Met Percent =
 DIVIDE(
     [SLA Met Count],
+    [Total Exceptions]
+)
+
+Closed Within SLA Count =
+CALCULATE(
+    COUNTROWS(FactExceptions),
+    FactExceptions[Status] = "Closed",
+    FactExceptions[SLA Breach Flag] = 0
+)
+
+Closed Within SLA Percent =
+DIVIDE(
+    [Closed Within SLA Count],
     [Closed Exceptions]
 )
 
-SLA Breach Flag =
-VAR IsClosed = FactExceptions[Status] = "Closed"
-VAR ClosedLate = IsClosed && FactExceptions[ClosedDate] > FactExceptions[DueDate]
-VAR StillOpenLate = NOT(IsClosed) && TODAY() > FactExceptions[DueDate]
-RETURN
-IF(ClosedLate || StillOpenLate, 1, 0)
-
-Age Days =
-VAR IsClosed = FactExceptions[Status] = "Closed"
+Aging for open items
+Aging Days Open =
+VAR Created = FactExceptions[CreatedDate]
+VAR Status = FactExceptions[Status]
 RETURN
 IF(
-    IsClosed,
-    DATEDIFF(FactExceptions[CreatedDate], FactExceptions[ClosedDate], DAY),
-    DATEDIFF(FactExceptions[CreatedDate], TODAY(), DAY)
+    Status = "Open",
+    DATEDIFF(Created, TODAY(), DAY),
+    BLANK()
 )
 
-Age Bucket =
-SWITCH(
-    TRUE(),
-    [Age Days] <= 1, "0 to 1 day",
-    [Age Days] <= 3, "2 to 3 days",
-    [Age Days] <= 7, "4 to 7 days",
-    "8 plus days"
+Aging Bucket =
+VAR DaysOpen = FactExceptions[Aging Days Open]
+RETURN
+IF(
+    ISBLANK(DaysOpen),
+    BLANK(),
+    SWITCH(
+        TRUE(),
+        DaysOpen <= 1, "0 to 1 days",
+        DaysOpen <= 3, "2 to 3 days",
+        DaysOpen <= 7, "4 to 7 days",
+        "8 plus days"
+    )
 )
+
+Reopen and escalation metrics
+Reopened Count =
+CALCULATE(
+    COUNTROWS(FactExceptions),
+    FactExceptions[ReopenedFlag] = TRUE()
+)
+
+Reopen Rate =
+DIVIDE(
+    [Reopened Count],
+    [Total Exceptions]
+)
+
+Escalated Count =
+CALCULATE(
+    COUNTROWS(FactExceptions),
+    FactExceptions[EscalatedFlag] = TRUE()
+)
+
+Escalation Rate =
+DIVIDE(
+    [Escalated Count],
+    [Total Exceptions]
+)
+
+First Time Fix Rate =
+VAR Closed = [Closed Exceptions]
+VAR Reopened = [Reopened Count]
+RETURN
+IF(
+    Closed = 0,
+    BLANK(),
+    DIVIDE(Closed - Reopened, Closed)
+)
+
+Operational focus measures
+Open High Priority Overdue =
+CALCULATE(
+    COUNTROWS(FactExceptions),
+    FactExceptions[Status] = "Open",
+    FactExceptions[Priority] = "High",
+    FactExceptions[DueDate] < TODAY()
+)
+
+Open Items Breach Risk Next 1 Day =
+CALCULATE(
+    COUNTROWS(FactExceptions),
+    FactExceptions[Status] = "Open",
+    FactExceptions[DueDate] <= TODAY() + 1
+)
+
+Suggested visuals mapping
+1 KPI cards
+   Total Exceptions
+   Open Exceptions
+   SLA Met Percent
+   Average Resolution Hours
+
+2 Tables
+   Ticket list filtered to Open and DueDate <= Today plus 1
+   SLA breach list where SLA Breach Flag = 1
+
+3 Charts
+   Open Exceptions by IssueType
+   Open Exceptions by Vendor
+   Aging Bucket distribution for open items
