@@ -1,0 +1,6 @@
+AsOfDate,PortfolioID,PortfolioName,SecurityID,Quantity,LocalPrice,LocalCurrency,MarketValueLocal,BaseCurrency,MarketValueBase,PriceSource
+2026/01/19,PF001,Global Equity Model,SEC0001,120,185.50,USD,22260.00,GBP,17540.00,Bloomberg
+2026/01/19,PF001,Global Equity Model,SEC0003,40,680.00,EUR,27200.00,GBP,23300.00,Bloomberg
+2026/01/19,PF001,Global Equity Model,SEC0009,3000,1.25,GBP,3750.00,GBP,3750.00,Internal
+2026/01/19,PF002,Income Model,SEC0006,50000,99.10,USD,49550.00,GBP,39000.00,Bloomberg
+2026/01/19,PF002,Income Model,SEC0007,25000,92.40,USD,23100.00,GBP,18200.00,Bloomberg
