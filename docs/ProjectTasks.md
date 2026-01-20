@@ -13,20 +13,21 @@ All data is synthetic and created for demonstration only.
    • screenshots  
 
 2. Add these CSV files into the data folder
+   
    • DimSecurityMaster.csv  
    • FactVendorSecuritySnapshot.csv  
    • FactExceptions.csv  
    • FactIndexConstituents.csv  
    • FactPortfolioHoldings.csv  
 
-3. Open Power BI Desktop and load all CSV files from the data folder.
+4. Open Power BI Desktop and load all CSV files from the data folder.
 
-4. In Power Query, set data types
+5. In Power Query, set data types
    • Dates: CreatedDate, DueDate, ClosedDate, AsOfDate, MaturityDate, LastUpdated  
    • Numbers: Coupon, Weight, Quantity, LocalPrice, MarketValueLocal, MarketValueBase, SLAHours  
    • Text: everything else
 
-5. Build relationships in the data model
+6. Build relationships in the data model
    • DimSecurityMaster[SecurityID] to FactExceptions[SecurityID]  
    • DimSecurityMaster[SecurityID] to FactVendorSecuritySnapshot[SecurityID]  
    • DimSecurityMaster[SecurityID] to FactIndexConstituents[SecurityID]  
