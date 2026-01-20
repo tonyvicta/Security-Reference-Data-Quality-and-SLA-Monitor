@@ -55,7 +55,7 @@ A new corporate bond is issued.
 
 - Sourcing: Bloomberg feed delivers the bond reference record.
 - Analysis: quality checks flag missing required attributes and an identifier mismatch.
-- Integration: map ISIN to Fidelity SecurityID and standardise key fields.
+- Integration: map ISIN to SecurityID and standardise key fields.
 - Management: investigate the exception, document the fix, and complete within SLA.
 - Distribution: publish the corrected record so downstream systems can use it for trading and reporting.
 
@@ -81,9 +81,8 @@ A new corporate bond is issued.
   * FactPortfolioHoldings.csv  
 * docs  
   * ProjectTasks.md  
-  * PowerBI_Measures_DAX.txt  
-* screenshots  
-  * Optional screenshots of the Power BI pages  
+  * PowerBI_Measures_DAX.txt
+    
 * README.md  
 
 ## Future enhancements
