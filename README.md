@@ -1,7 +1,7 @@
 # Security Reference Data Mini Project
 
 ## Objective
-Build a small security reference data pipeline that ingests Bloomberg style security attributes, validates them, integrates them into a single internal Security Master record, manages exceptions with SLA tracking, and distributes a curated dataset to Power BI for reporting.
+I built a small security reference data pipeline that ingests Bloomberg style attributes, runs data quality checks, and consolidates them into a Security Master. I also added an exception queue with SLA tracking and a Power BI dashboard to monitor open issues, breaches, and daily investigation workload.
 
 ## Workflow and tasks
 
