@@ -61,9 +61,9 @@ A new corporate bond is issued.
 
 ## Power BI dashboard
 
-<p align="center">
+<p align=";left">
   <a href="https://app.powerbi.com/view?r=eyJrIjoiODc3YTNlMjMtOWQzYS00NjA1LWIxOGYtZmRiM2U2YmRjYmFjIiwidCI6IjU1M2JkNGM5LTA3YTgtNGQyMy04ZDEyLWFkNzFkZWU3NGM3ZCJ9" target="_blank">
-    <img src="docs/Security_Ref_Data.gif" alt="Data Quality Overview Power BI preview" width="900" />
+    <img src="docs/Security_Ref_Data.gif" alt="Data Quality Overview Power BI preview" width="600" />
   </a>
 </p>
 
