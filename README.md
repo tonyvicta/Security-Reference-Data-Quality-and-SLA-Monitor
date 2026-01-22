@@ -7,7 +7,7 @@ Build a small security reference data pipeline that ingests Bloomberg style secu
 
 ### Step 1 Sourcing
 Getting the data from somewhere.
-- External vendors like Bloomberg, LSEG DataScope
+- External vendors like Bloomberg, Refinitive
 - Internal sources like trading, accounting, or portfolio systems.
 
 Key point: each source can disagree, arrive at different times, and use different identifiers
