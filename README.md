@@ -59,7 +59,14 @@ A new corporate bond is issued.
 - Management: investigate the exception, document the fix, and complete within SLA.
 - Distribution: publish the corrected record so downstream systems can use it for trading and reporting.
 
-## Power BI pages  
+## Power BI dashboard
+
+<p align="center">
+  <a href="https://app.powerbi.com/view?r=eyJrIjoiODc3YTNlMjMtOWQzYS00NjA1LWIxOGYtZmRiM2U2YmRjYmFjIiwidCI6IjU1M2JkNGM5LTA3YTgtNGQyMy04ZDEyLWFkNzFkZWU3NGM3ZCJ9" target="_blank">
+    <img src="docs/Security_Ref_Data.gif" alt="Data Quality Overview Power BI preview" width="900" />
+  </a>
+</p>
+
 1. Data Quality Overview  
 2. Exceptions and SLA  
 3. Vendor Comparison  
