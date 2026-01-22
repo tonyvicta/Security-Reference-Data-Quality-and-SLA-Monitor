@@ -1,5 +1,18 @@
 # Security Reference Data Mini Project
 
+![Power BI](https://img.shields.io/badge/Power%20BI-F2C811?style=for-the-badge&logo=powerbi&logoColor=000)
+![DAX](https://img.shields.io/badge/DAX-5B2C83?style=for-the-badge&logo=microsoft&logoColor=fff)
+![Power Query](https://img.shields.io/badge/Power%20Query-217346?style=for-the-badge&logo=microsoft-excel&logoColor=fff)
+![Data Modeling](https://img.shields.io/badge/Data%20Modeling-111827?style=for-the-badge&logo=databricks&logoColor=fff)
+![Excel](https://img.shields.io/badge/Excel-217346?style=for-the-badge&logo=microsoft-excel&logoColor=fff)
+![GitHub](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=fff)
+![Markdown](https://img.shields.io/badge/Markdown-000000?style=for-the-badge&logo=markdown&logoColor=fff)
+
+![Bloomberg](https://img.shields.io/badge/Bloomberg-111111?style=for-the-badge)
+![LSEG%20Refinitiv](https://img.shields.io/badge/LSEG%20Refinitiv-0A2F5A?style=for-the-badge)
+
+
+
 ## Objective
 I built a small security reference data pipeline that ingests Bloomberg style attributes, runs data quality checks, and consolidates them into a Security Master. I also added an exception queue with SLA tracking and a Power BI dashboard to monitor open issues, breaches, and daily investigation workload.
 
